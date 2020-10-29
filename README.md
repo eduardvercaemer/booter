@@ -10,7 +10,11 @@ are defined in the `interrupts.asm` file.
 The full reference for this interrupts is
 [https://www.stanislavs.org/helppc/idx_interrupt.html](https://www.stanislavs.org/helppc/idx_interrupt.html)
 
-## Video Services
+## BIOS Services
+
+Different services require arguments in certain registers, the main argument
+usually goes in `AH`, the notation for this is `int 0x--,-` where the first
+number is the interrupt, and the second is the argument in `AH`.
 
 The video services are provided via `int 0x10`:
 - `int 0x10,0` -> set video mode

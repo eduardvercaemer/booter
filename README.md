@@ -34,3 +34,6 @@ to the screen.
 
 `step.asm` is a hello world, but it will print the characters one at a time,
 whenever a key is pressed, using `int 0x16,0`
+
+`echo.asm` will echo keyboard input to screen, until the `return` key is
+pressed, using the same `int`'s

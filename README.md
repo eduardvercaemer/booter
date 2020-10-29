@@ -16,6 +16,9 @@ The video services are provided via `int 0x10`:
 - `int 0x10,0` -> set video mode
 - `int 0x10,e` -> write text in teletype mode
 
+The keyboard services are provided via `int 0x16`:
+- `int 0x16,0` -> wait for a keypress and return character
+
 # Usage
 
 Programs are compiled with `nasm` to binary format, and run in `qemu`.
@@ -24,3 +27,6 @@ Programs are compiled with `nasm` to binary format, and run in `qemu`.
 
 `hello.asm` is a simple prgram, that will use `int 0x10` to print strings
 to the screen.
+
+`step.asm` is a hello world, but it will print the characters one at a time,
+whenever a key is pressed, using `int 0x16,0`

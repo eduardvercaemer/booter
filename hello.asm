@@ -17,7 +17,7 @@
 ;
 ;============================================================================
 
-%include "interrupts.asm"
+%include "interrupts.inc"
 
         [ORG 0]
         jmp     0x07c0:entry

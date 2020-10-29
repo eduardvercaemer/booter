@@ -5,7 +5,7 @@ Bootloader and some basic programs in boot sector code
 # BIOS interrupts
 
 The BIOS provides basic services via interrupts, the different services
-are defined in the `interrupts.asm` file.
+are defined in the `interrupts.inc` file.
 
 The full reference for this interrupts is
 [https://www.stanislavs.org/helppc/idx_interrupt.html](https://www.stanislavs.org/helppc/idx_interrupt.html)

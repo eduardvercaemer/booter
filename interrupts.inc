@@ -1,6 +1,6 @@
 ;============================================================================
 ;
-; -- interrupts.asm
+; -- interrupts.inc
 ; -- Eduard Vercaemer
 ; 
 ; Bios interrupt codes for x86

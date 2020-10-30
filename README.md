@@ -27,6 +27,9 @@ The keyboard services are provided via `int 0x16`:
 
 Programs are compiled with `nasm` to binary format, and run in `qemu`.
 
+- `asm.sh` will assemble all sources to binaries
+- `run.sh` will run the provided binary in qemu automatically
+
 # Programs
 
 - `hello.asm` is a simple prgram, that will use `int 0x10` to print strings

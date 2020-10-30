@@ -33,13 +33,20 @@ Programs are compiled with `nasm` to binary format, and run in `qemu`.
 # Programs
 
 - `hello.asm` is a simple prgram, that will use `int 0x10` to print strings
-to the screen.
+  to the screen.
 
 - `step.asm` is a hello world, but it will print the characters one at a time,
-whenever a key is pressed, using `int 0x16,0`
+  whenever a key is pressed, using `int 0x16,0`
 
 - `echo.asm` will echo keyboard input to screen, until the `return` key is
-pressed, using the same `int`'s
+  pressed, using the same `int`'s
 
 - `pixel.asm` will set a VGA graphics mode, and draw a single red pixel using
-screen coordinates, utilizing `ìnt 0x10,c`
+  screen coordinates, utilizing `ìnt 0x10,c`
+
+- `memmap.asm` will print characters in the screen, by directly writing to
+  VGA mapped memory
+
+  sources:
+  - [https://en.wikipedia.org/wiki/Video_Graphics_Array#Use](https://en.wikipedia.org/wiki/Video_Graphics_Array#Use)
+  - [http://www.osdever.net/FreeVGA/vga/vgamem.htm#mapping](http://www.osdever.net/FreeVGA/vga/vgamem.htm#mapping)

@@ -46,7 +46,5 @@ Programs are compiled with `nasm` to binary format, and run in `qemu`.
 
 - `memmap.asm` will print characters in the screen, by directly writing to
   VGA mapped memory
-
-  sources:
   - [https://en.wikipedia.org/wiki/Video_Graphics_Array#Use](https://en.wikipedia.org/wiki/Video_Graphics_Array#Use)
   - [http://www.osdever.net/FreeVGA/vga/vgamem.htm#mapping](http://www.osdever.net/FreeVGA/vga/vgamem.htm#mapping)

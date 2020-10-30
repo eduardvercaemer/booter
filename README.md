@@ -37,3 +37,6 @@ whenever a key is pressed, using `int 0x16,0`
 
 - `echo.asm` will echo keyboard input to screen, until the `return` key is
 pressed, using the same `int`'s
+
+- `pixel.asm` will set a VGA graphics mode, and draw a single red pixel using
+screen coordinates, utilizing `ìnt 0x10,c`

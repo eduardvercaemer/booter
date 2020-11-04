@@ -7,8 +7,7 @@ Bootloader and some basic programs in boot sector code
 The BIOS provides basic services via interrupts, the different services
 are defined in the `interrupts.inc` file.
 
-The full reference for this interrupts is
-[https://www.stanislavs.org/helppc/idx_interrupt.html](https://www.stanislavs.org/helppc/idx_interrupt.html)
+[For the full bios interrupts reference](https://www.stanislavs.org/helppc/idx_interrupt.html)
 
 ## BIOS Services
 
@@ -46,5 +45,12 @@ Programs are compiled with `nasm` to binary format, and run in `qemu`.
 
 - `memmap.asm` will print characters in the screen, by directly writing to
   VGA mapped memory
-  - [https://en.wikipedia.org/wiki/Video_Graphics_Array#Use](https://en.wikipedia.org/wiki/Video_Graphics_Array#Use)
-  - [http://www.osdever.net/FreeVGA/vga/vgamem.htm#mapping](http://www.osdever.net/FreeVGA/vga/vgamem.htm#mapping)
+
+# Resources
+
+List of resources on the topic:
+
+- [Bios Interrupts Reference](https://www.stanislavs.org/helppc/idx_interrupt.html)
+- [VGA - Video Hardware](http://www.osdever.net/FreeVGA/home.htm)
+- [Writing Boot Sector Code](https://susam.in/blog/writing-boot-sector-code/)
+- [Intel 64 and IA-32 Architectures Software Developer’s Manual Combined Volumes](https://software.intel.com/content/dam/develop/public/us/en/documents/325462-sdm-vol-1-2abcd-3abcd.pdf)

@@ -6,5 +6,5 @@
 - Explore VGA graphics mode
   - Colors, bg and fg
   - Pixel drawing
-- Explore x86 `IN` and `OUT` instructions
+- Explore x86 `IN` and `OUT` instructions for port I/O
 - Use BIOS `int`'s to load programs from disk / floppy

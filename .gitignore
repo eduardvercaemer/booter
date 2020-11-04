@@ -1,5 +1,2 @@
-hello
-step
-echo
-pixel
-memmap
+bin
+*.bin

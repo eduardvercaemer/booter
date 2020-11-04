@@ -3,13 +3,14 @@
 # -- run.sh
 # -- Eduard Vercaemer
 #
-# run bootsector code in qemu
+# assemble and run bootsector program in qemu
 # usage:
-#  run.sh <binary>
+#  run.sh <program name>
 #
 
 if [ -n "$1" ]; then
-        qemu-system-x86_64 -drive file=$1,format=raw
+        nasm -f bin -I./src ./src/$1.asm -o ./bin/$1.bin
+        qemu-system-x86_64 -drive file=./bin/$1.bin,format=raw
 else
-        echo "usage: $0 <binary>"
+        echo "usage: $0 <program name>"
 fi

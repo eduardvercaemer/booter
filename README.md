@@ -24,10 +24,10 @@ The keyboard services are provided via `int 0x16`:
 
 # Usage
 
-Programs are compiled with `nasm` to binary format, and run in `qemu`.
+Programs are assembled with `nasm` to binary format, and run in `qemu`.
 
-- `asm.sh` will assemble all sources to binaries
-- `run.sh` will run the provided binary in qemu automatically
+- `run.sh` will assemble and run the provided program in qemu automatically
+- `run.bat` same but for windows (requires nasm and qemu installed)
 
 # Programs
 

@@ -54,3 +54,4 @@ List of resources on the topic:
 - [VGA - Video Hardware](http://www.osdever.net/FreeVGA/home.htm)
 - [Writing Boot Sector Code](https://susam.in/blog/writing-boot-sector-code/)
 - [Intel 64 and IA-32 Architectures Software Developer’s Manual Combined Volumes](https://software.intel.com/content/dam/develop/public/us/en/documents/325462-sdm-vol-1-2abcd-3abcd.pdf)
+- [I/O Ports list](http://bochs.sourceforge.net/techspec/PORTS.LST)

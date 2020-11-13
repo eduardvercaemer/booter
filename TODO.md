@@ -15,6 +15,9 @@
   - Write modes
   - Pixel drawing in graphics mode
   - Cursor and text mode
+- Program loading
+  - Design memory layout
+  - Load program from drive
 - Load simple kernel in protected mode
   - Create simple VGA driver
     - Register access

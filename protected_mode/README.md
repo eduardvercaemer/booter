@@ -16,6 +16,6 @@ our data.
 
 # Programs
 
-- `loader.asm` is a simple program where we create a
+- `switch_mode.asm` is a simple program where we create a
   valid GDT with two segment descriptors, and them load
   protected mode.

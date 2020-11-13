@@ -9,7 +9,7 @@
 #
 
 if [ -n "$1" ]; then
-        nasm -f bin -I./src ./src/$1.asm -o ./bin/$1.bin
+        nasm -f bin -I. ./$1.asm -o ./bin/$1.bin
         qemu-system-x86_64 -drive file=./bin/$1.bin,format=raw
 else
         echo "usage: $0 <program name>"

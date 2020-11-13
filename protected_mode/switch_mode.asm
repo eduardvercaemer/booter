@@ -1,6 +1,6 @@
 ;======================================================================
 ;
-; -- loader.asm
+; -- switch_mode.asm
 ; -- Eduard Vercaemer
 ;
 ;  create a valid GDT with two entries, one code segment and one

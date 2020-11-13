@@ -13,3 +13,9 @@ single memoy segment which can contain our code and
 our data.
 
 ![Segment Descriptor Format](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/SegmentDescriptor.svg/870px-SegmentDescriptor.svg.png)
+
+# Programs
+
+- `loader.asm` is a simple program where we create a
+  valid GDT with two segment descriptors, and them load
+  protected mode.

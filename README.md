@@ -1,11 +1,17 @@
 # B00ter
 
-Boot sector programming, with the use of assembly x86
+Boot sector programming, with the use of assembly x86.
 
 # Basic Programs
 
 Check the directory `./basic` for some simple programs and
 an introduction for boot sector programming.
+
+Concepts include:
+- BIOS services
+- Memory mapped I/O
+- Port I/O
+- VGA
 
 # Protected Mode
 

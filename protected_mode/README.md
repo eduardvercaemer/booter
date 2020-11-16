@@ -19,3 +19,6 @@ our data.
 - `switch_mode.asm` is a simple program where we create a
   valid GDT with two segment descriptors, and them load
   protected mode.
+- `boot_32.asm` and `payload_32.asm` combine the concepts
+  of loading another program and switching to protected
+  mode.

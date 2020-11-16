@@ -45,8 +45,10 @@ List of resources on the topic:
 - [General Hardware Help and Reference](https://www.stanislavs.org/helppc/)
 - [Bios Interrupts Reference](https://www.stanislavs.org/helppc/idx_interrupt.html)
 - [VGA - Video Hardware](http://www.osdever.net/FreeVGA/home.htm)
-- [VGA write modes](http://www.retroarchive.org/swag/EGAVGA/0222.PAS.html)
-- [Intel 64 and IA-32 Architectures Software Developer’s Manual Combined Volumes](https://software.intel.com/content/dam/develop/public/us/en/documents/325462-sdm-vol-1-2abcd-3abcd.pdf)
+- [VGA - write modes](http://www.retroarchive.org/swag/EGAVGA/0222.PAS.html)
 - [I/O Ports list](http://bochs.sourceforge.net/techspec/PORTS.LST)
+
+- [Intel 64 and IA-32 Architectures Software Developer’s Manual Combined Volumes](https://software.intel.com/content/dam/develop/public/us/en/documents/325462-sdm-vol-1-2abcd-3abcd.pdf)
 - [Entering Protected Mode](http://www.osdever.net/tutorials/view/the-world-of-protected-mode)
 - [Global Descriptor Tables](https://en.wikipedia.org/wiki/Global_Descriptor_Table)
+- [Using Inline Assmebly in C](https://wiki.osdev.org/Inline_Assembly)

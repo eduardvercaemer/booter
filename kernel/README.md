@@ -4,28 +4,42 @@ Here we start our little kernel. Now that we are
 finally able to load a program in protected mode
 we can start to write some code in C.
 
-# Introduction
+# Layout
 
-We first have our 'bootloader' from before, that
-setups protected mode and loads the payload just
-like before, then we pass control to our payload.
+We have to main binary images, `boot.bin`, which
+is in charge of setting our GDT, pur stack, etc.
+and `kernel.bin`, wihch is our kernel, that will
+be loaded by `boot.bin` into memory and then handle
+control to it.
 
-This time, our payload is a program we wrote in C,
-we compile it to 32 bits for protected mode, and
-then we extract the plain binary .text section
-from it.
+# Usage
 
-To have some sort of entry point, the bootloader
-jumps straight to the first instruction in our
-payload, thus we begin with a function that calls
-our `main` method.
+Multiple commands are defined in the Makefile, use:
 
-To run this kernel, simply run
 ```
-> .\run.bat
+$ make build
 ```
-this assembles, compiles and generates the needed
-binary disc image for our virtual machine to run.
+
+to build the whole image.
+
+```
+$ make debug
+```
+
+to build the image and open the kernel binary
+in radare with the correct options.
+
+```
+$ make run
+```
+
+to build the image and run with qemu.
+
+```
+$ make clean
+```
+
+to remove any build files.
 
 # Kernel Functionality
 

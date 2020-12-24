@@ -24,8 +24,11 @@ build: $(IMAGE).bin
 run: $(IMAGE).bin
 	qemu-system-x86_64 -drive file=$<,format=raw
 
-debug: $(KERNEL).o
-	r2 $<
+debug: $(IMAGE).bin
+	gdb -x qemu.gdb
+
+analyze: $(KERNEL).o
+	r2 -a x86 -b 32 $<
 
 clean:
 	rm -f *.o

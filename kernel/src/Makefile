@@ -1,7 +1,7 @@
 AS     = nasm
-SFLAGS = -f elf32
+SFLAGS = -O0 -g -f elf32
 CC     = cc
-CFLAGS = -nostdlib -m32 -ffreestanding -fno-pie
+CFLAGS = -O0 -g -nostdlib -m32 -ffreestanding -fno-pie
 LD     = ld
 LFLAGS = -m elf_i386
 
@@ -24,15 +24,19 @@ build: $(IMAGE).bin
 run: $(IMAGE).bin
 	qemu-system-x86_64 -drive file=$<,format=raw
 
-debug: $(IMAGE).bin
+debug: $(IMAGE).bin $(KERNEL).sym
+	qemu-system-x86_64 -s -S -drive file=$<,format=raw &
+	sleep 1
 	gdb -x qemu.gdb
 
-analyze: $(KERNEL).o
+analyze: $(KERNEL).elf
 	r2 -a x86 -b 32 $<
 
 clean:
 	rm -f *.o
 	rm -f *.bin
+	rm -f *.elf
+	rm -f *.sym
 
 .PHONY: build run debug clean
 
@@ -41,11 +45,14 @@ clean:
 $(IMAGE).bin: $(BOOT).bin $(KERNEL).bin
 	cat $^ > $@
 
-$(KERNEL).bin: $(KOBJS)
-	$(LD) $(LFLAGS) -T k32.ld -o $@ $^
+$(KERNEL).bin: $(KERNEL).elf
+	objcopy -O binary $< $@
 
-$(KERNEL).o: $(KOBJS)
-	$(LD) $(LFLAGS) -T k32.ld --oformat=elf32-i386 -o $@ $^
+$(KERNEL).sym: $(KERNEL).elf
+	objcopy --only-keep-debug $< $@
+
+$(KERNEL).elf: $(KOBJS)
+	$(LD) $(LFLAGS) -T k32.ld -o $@ $^
 
 $(BOOT).bin: boot.s
 	$(AS) -f bin -o $@ $^

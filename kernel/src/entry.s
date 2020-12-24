@@ -1,6 +1,6 @@
     [SECTION .text.start]
-    extern kmain
-    global kentry
+    extern  kmain:function
+    global  kentry:function
 
 kentry:
     jmp     kmain

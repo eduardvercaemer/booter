@@ -20,6 +20,28 @@ For now, the kernel is loaded at address `0x8000`,
 where the startup code is executed. The stacks is
 setup to begin at address `0x9FFFF`.
 
+# Files
+
+Source code is stored in `./src`, any build files
+will be stored in `./build`, and misc scripts are
+stored in `./scripts`.
+
+# Build System
+
+The build process is as follows:
+
+- The bootloader is assembled from the single file
+  `boot.s`, this will be the code loaded as boot
+  sector.
+- The kernel startup code is in `entry.s`, this will
+  be compiled into a regular elf.
+- Other kernel objects are compiled.
+- All these objects are linked together with our
+  link script `k32.kd`.
+- A binary is extracted from the kernel elf.
+- We combine the bootloader and kernel into a final
+  binary image.
+
 # Usage
 
 Multiple commands are defined in the Makefile, use:

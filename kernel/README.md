@@ -16,6 +16,10 @@ process is done, `kmain` is finally called.
 `main.c` contains `kmain`, and is the main file for
 our kernel.
 
+For now, the kernel is loaded at address `0x8000`,
+where the startup code is executed. The stacks is
+setup to begin at address `0x9FFFF`.
+
 # Usage
 
 Multiple commands are defined in the Makefile, use:
@@ -24,14 +28,22 @@ Multiple commands are defined in the Makefile, use:
 $ make build
 ```
 
-simply builds the loadable image.
+assembles the bootloder, build the kernel, and generates
+an image with both.
+
+```
+$ make analyze
+```
+
+to build an elf version of the kernel, and load it
+into radare to inspect it.
 
 ```
 $ make debug
 ```
 
-to build an elf version of the kernel, and load it
-into radare to inspect it.
+runs the kernel in qemu and gives you control of a gdb
+session attached to the emulated system.
 
 ```
 $ make run

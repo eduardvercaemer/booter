@@ -35,6 +35,8 @@ implementing the bootloader that will load the kernel in
 protected mode, so that we can begin writing our kernel
 in C.
 
+The main content of this project lies in `./kernel`.
+
 # Resources
 
 List of resources on the topic:

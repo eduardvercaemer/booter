@@ -1,12 +1,15 @@
 OUTPUT_FORMAT(binary)
+ENTRY(kentry)
 
 SECTIONS {
+    /* addr were kernel is loaded */
     . = 0x8000;
 
-    .text : { entry.o (.text); }
+    /* the .text.start section inits the kernel (entry point) */
+    .text.start : { * (.text.start); }
 
-    .text : { EXCLUDE_FILE(entry.o) * (.text); }
+    /* we then add all other code and data sections */
+    .text : { * (.text); }
     .data : { * (.data); }
-    .rodata : { * (.rodata); }
     .bss  : { * (.bss);  }
 }

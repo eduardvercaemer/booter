@@ -6,11 +6,15 @@ we can start to write some code in C.
 
 # Layout
 
-We have to main binary images, `boot.bin`, which
-is in charge of setting our GDT, pur stack, etc.
-and `kernel.bin`, wihch is our kernel, that will
-be loaded by `boot.bin` into memory and then handle
-control to it.
+The file `boot.s` is in charge of loading the rest
+of the image and passing control, that's it.
+
+Then, `entry.s` has the code that is executed after
+that, this is our kernel entry point, after the init
+process is done, `kmain` is finally called.
+
+`main.c` contains `kmain`, and is the main file for
+our kernel.
 
 # Usage
 
@@ -20,14 +24,14 @@ Multiple commands are defined in the Makefile, use:
 $ make build
 ```
 
-to build the whole image.
+simply builds the loadable image.
 
 ```
 $ make debug
 ```
 
-to build the image and open the kernel binary
-in radare with the correct options.
+to build an elf version of the kernel, and load it
+into radare to inspect it.
 
 ```
 $ make run

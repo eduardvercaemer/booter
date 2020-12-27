@@ -5,6 +5,8 @@ SECTIONS {
     /* addr were kernel is loaded */
     . = 0x8000;
 
+    _kstart = .;
+
     /* the .text.start section inits the kernel (entry point) */
     .text.start : { * (.text.start); }
 
@@ -12,4 +14,6 @@ SECTIONS {
     .text : { * (.text); }
     .data : { * (.data); }
     .bss  : { * (.bss);  }
+
+    _kend = .;
 }

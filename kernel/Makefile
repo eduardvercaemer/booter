@@ -22,6 +22,7 @@ KOBJS  = \
 	main.o \
 	misc.o \
 	ports.o \
+	vga.o \
 	vga_text.o \
 	mem.o
 KLINK   = $(SCRIPTS)/k32.ld

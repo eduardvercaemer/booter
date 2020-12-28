@@ -1,24 +1,24 @@
 #include <ports.h>
 
-void outb(u16 port, u8 val)
+extern void outb(u16 port, u8 val)
 {
-    __asm__ (
+    __asm__ __volatile__ (
         "outb %0, %1\n\t"
         :
         : "a" (val), "Nd" (port)
     );
 }
 
-void outw(u16 port, u16 val)
+extern void outw(u16 port, u16 val)
 {
-    __asm__ (
+    __asm__ __volatile__ (
         "outw %0, %1\n\t"
         :
         : "a" (val), "Nd" (port)
     );
 }
 
-u8 inb(u16 port)
+extern u8 inb(u16 port)
 {
     u8 ret;
 
@@ -31,7 +31,7 @@ u8 inb(u16 port)
     return ret;
 }
 
-u16 inw(u16 port)
+extern u16 inw(u16 port)
 {
     u16 ret;
 

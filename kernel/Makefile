@@ -25,7 +25,8 @@ KOBJS  = \
 	mem.o \
 	vga/vga.o \
 	vga/registers.o \
-	vga/text.o
+	vga/text.o \
+	serial/serial.o
 KLINK   = $(SCRIPTS)/k32.ld
 QEMUDBG = $(SCRIPTS)/qemu.gdb
 
@@ -59,6 +60,7 @@ clean:
 dirs:
 	@[[ -d $(BUILDDIR) ]] || mkdir $(BUILDDIR)
 	@[[ -d $(BUILDDIR)/vga ]] || mkdir $(BUILDDIR)/vga
+	@[[ -d $(BUILDDIR)/serial ]] || mkdir $(BUILDDIR)/serial
 
 .PHONY: build run debug clean dirs
 

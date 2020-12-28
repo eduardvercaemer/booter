@@ -1,56 +1,102 @@
-# B00ter
-
-Boot sector programming, with the use of assembly x86.
-
-# Basic Programs
-
-Check the directory `./basic` for some simple programs and
-an introduction for boot sector programming.
-
-Concepts include:
-- BIOS services
-- Memory mapped I/O
-- Port I/O
-- VGA
-
-# Booting
-
-Here we get to load a program and pass control, to overcome
-the boot sector limits. We make use of BIOS services to
-read from a drive and load into memory.
-
-# Protected Mode
-
-Check the directory `./protected_mode` for the first steps
-into using the protected mode of the x86 architecture.
-
-We then get to load a program like in the _Booting_ section,
-but now in protected mode, this will allow us to start
-writing code in C.
-
 # Kernel
 
-We can finally start our little 'kernel', we begin by
-implementing the bootloader that will load the kernel in
-protected mode, so that we can begin writing our kernel
-in C.
+Here we start our little kernel. Now that we are
+finally able to load a program in protected mode
+we can start to write some code in C.
 
-The main content of this project lies in `./kernel`.
+# Layout
 
-# Resources
+The file `boot.s` is in charge of loading the rest
+of the image and passing control, that's it.
 
-List of resources on the topic:
+Then, `entry.s` has the code that is executed after
+that, this is our kernel entry point, after the init
+process is done, `kmain` is finally called.
 
+`main.c` contains `kmain`, and is the main file for
+our kernel.
 
-- [Writing Boot Sector Code](https://susam.in/blog/writing-boot-sector-code/)
-- [Writing a Bootloader from Scratch](https://www.cs.cmu.edu/~410-s07/p4/p4-boot.pdf)
-- [General Hardware Help and Reference](https://www.stanislavs.org/helppc/)
-- [Bios Interrupts Reference](https://www.stanislavs.org/helppc/idx_interrupt.html)
-- [VGA - Video Hardware](http://www.osdever.net/FreeVGA/home.htm)
-- [VGA - write modes](http://www.retroarchive.org/swag/EGAVGA/0222.PAS.html)
-- [I/O Ports list](http://bochs.sourceforge.net/techspec/PORTS.LST)
+For now, the kernel is loaded at address `0x8000`,
+where the startup code is executed. The stacks is
+setup to begin at address `0x9FFFF`.
 
-- [Intel 64 and IA-32 Architectures Software Developer’s Manual Combined Volumes](https://software.intel.com/content/dam/develop/public/us/en/documents/325462-sdm-vol-1-2abcd-3abcd.pdf)
-- [Entering Protected Mode](http://www.osdever.net/tutorials/view/the-world-of-protected-mode)
-- [Global Descriptor Tables](https://en.wikipedia.org/wiki/Global_Descriptor_Table)
-- [Using Inline Assmebly in C](https://wiki.osdev.org/Inline_Assembly)
+# Files
+
+Source code is stored in `./src`, any build files
+will be stored in `./build`, and misc scripts are
+stored in `./scripts`.
+
+# Build System
+
+The build process is as follows:
+
+- The bootloader is assembled from the single file
+  `boot.s`, this will be the code loaded as boot
+  sector.
+- The kernel startup code is in `entry.s`, this will
+  be compiled into a regular elf.
+- Other kernel objects are compiled.
+- All these objects are linked together with our
+  link script `k32.kd`.
+- A binary is extracted from the kernel elf.
+- We combine the bootloader and kernel into a final
+  binary image.
+
+# Usage
+
+Multiple commands are defined in the Makefile, use:
+
+```
+$ make build
+```
+
+assembles the bootloder, build the kernel, and generates
+an image with both.
+
+```
+$ make analyze
+```
+
+to build an elf version of the kernel, and load it
+into radare to inspect it.
+
+```
+$ make debug
+```
+
+runs the kernel in qemu and gives you control of a gdb
+session attached to the emulated system.
+
+```
+$ make run
+```
+
+to build the image and run with qemu.
+
+```
+$ make clean
+```
+
+to remove any build files.
+
+# Kernel Functionality
+
+Since once we are in protected we are unable to use
+any BIOS services, we are required to implement any
+functionality ourselves.
+
+## Console Output
+
+We can use a global `cursor` to represent our position
+in the screen, we can then use this information and
+the VGA memory area to draw any characters to the
+screen _(see function `putc`)_.
+
+## Input
+
+_TODO:_
+
+## System
+
+We have a simple function `hang` that simply loops
+the processor.

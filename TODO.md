@@ -1,26 +1,9 @@
-# TODO
+# Serial
 
-- `./basic`: organize conepts into little tutorial-like programs
-  - Introduce BIOS interrupts
-    - Printing of chars
-    - Cursor movement
-    - Keyboard input
-    - Reading floppy drives
-  - Introduce memory mapped I/O
-    - Char rendering with Video Memory
-  - Introduce port I/O
-    - VGA registers
-- VGA programming via pure port I/O
-  - Mode selection
-  - Write modes
-  - Pixel drawing in graphics mode
-  - Cursor and text mode
-- Program loading
-  - Design memory layout
-  - Load program from drive
-- Load simple kernel in protected mode
-  - Create simple VGA driver
-    - Register access
-    - Pixel drawing
-    - Character drawing
-  - Keyboard input in protected mode ???
+- improve serial implementation
+
+# VGA
+
+- fix pixel draw bug
+  - graphics mode not set correctly ?
+  - [see](https://wiki.osdev.org/VGA_Hardware#Sample_timing_scheme)

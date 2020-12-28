@@ -1,4 +1,3 @@
 # Serial
 
-- implement serial functionality
-  - log to serial
+- improve serial implementation

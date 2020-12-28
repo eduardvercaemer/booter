@@ -23,6 +23,7 @@ KOBJS  = \
 	system.o \
 	ports.o \
 	mem.o \
+	log.o \
 	vga/vga.o \
 	vga/registers.o \
 	vga/text.o \

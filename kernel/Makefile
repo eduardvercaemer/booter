@@ -24,6 +24,7 @@ KOBJS  = \
 	ports.o \
 	mem.o \
 	vga/vga.o \
+	vga/registers.o \
 	vga/text.o
 KLINK   = $(SCRIPTS)/k32.ld
 QEMUDBG = $(SCRIPTS)/qemu.gdb

@@ -1,5 +1,5 @@
-#ifndef K_TYPES_H
-#define K_TYPES_H
+#ifndef KER_TYPES_H
+#define KER_TYPES_H
 
 typedef unsigned char       u8;
 typedef char                i8;

@@ -1,5 +1,5 @@
-#include "vga.h"
-#include "system.h"
+#include <vga.h>
+#include <ports.h>
 
 #define WIDTH   640
 #define HEIGHT  480

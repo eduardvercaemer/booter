@@ -1,4 +1,4 @@
-#include "system.h"
+#include <ports.h>
 
 void outb(u16 port, u8 val)
 {

@@ -1,16 +1,16 @@
-AS     = nasm
-SFLAGS = -O0 -g -f elf32
-CC     = cc
-CFLAGS = -O0 -g -nostdlib -m32 -ffreestanding -fno-pie
-LD     = ld
-LFLAGS = -m elf_i386
-QEMU   = qemu-system-x86_64
-
-# --------------------------------------------------------------------------- #
-
 SRCDIR   = ./src
 BUILDDIR = ./build
 SCRIPTS  = ./scripts
+
+# --------------------------------------------------------------------------- #
+
+AS     = nasm
+SFLAGS = -O0 -g -f elf32
+CC     = cc
+CFLAGS = -O0 -g -nostdlib -m32 -ffreestanding -fno-pie -I$(SRCDIR)/include
+LD     = ld
+LFLAGS = -m elf_i386
+QEMU   = qemu-system-x86_64
 
 # --------------------------------------------------------------------------- #
 
@@ -20,11 +20,11 @@ KERNEL = kernel
 KOBJS  = \
 	entry.s.o \
 	main.o \
-	misc.o \
+	system.o \
 	ports.o \
-	vga.o \
-	vga_text.o \
-	mem.o
+	mem.o \
+	vga/vga.o \
+	vga/text.o
 KLINK   = $(SCRIPTS)/k32.ld
 QEMUDBG = $(SCRIPTS)/qemu.gdb
 
@@ -57,6 +57,7 @@ clean:
 
 dirs:
 	@[[ -d $(BUILDDIR) ]] || mkdir $(BUILDDIR)
+	@[[ -d $(BUILDDIR)/vga ]] || mkdir $(BUILDDIR)/vga
 
 .PHONY: build run debug clean dirs
 

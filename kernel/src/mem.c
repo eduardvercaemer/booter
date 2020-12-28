@@ -1,4 +1,4 @@
-#include "mem.h"
+#include <mem.h>
 
 extern char _kstart;
 extern char _kend;

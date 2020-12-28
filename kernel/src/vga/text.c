@@ -1,4 +1,4 @@
-#include "vga.h"
+#include <vga.h>
 
 static char repr_half(u8 val);
 

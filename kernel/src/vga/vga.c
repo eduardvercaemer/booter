@@ -25,17 +25,15 @@ extern void clear()
 {
     char *off = (char*)0xa0000;
 
-    // write mode 3
-    gcw_graphics_mode(0x00, 0x00, 0x00, 0x00, 0x03);
-    // color 0x00
-    gcw_setreset(0x00);
-    // all pixels in byte
-    gcw_bitmask(0xff);
-    // all bitplanes
-    seqw_map_mask(0x0f);
+    gcw_graphics_mode(0x00, 0x00, 0x00, 0x00, 0x00);    // mode 00
+    gcw_data_rotate(0x00, 0x00);                        // nop; >> 0
+    gcw_bitmask(0xff);                                  // all pixels
+    gcw_enable_setreset(0x0f);                          // set/reset all planes
+    gcw_setreset(0x00);                                 // set color
+    seqw_map_mask(0x0f);                                // all planes
 
     for (u32 i = 0; i < 80*480; ++i, ++off) {
-        *off = 0xff;
+        *off = 0x00; // dummy write
     }
 }
 

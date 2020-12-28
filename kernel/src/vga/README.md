@@ -107,3 +107,43 @@ In short:
 ## TODO:
 
 Other modes.
+
+# Functionality
+
+## Clear Screen
+
+Lets design a function that clears the whole screen.
+```
+clear()
+```
+We will use write mode 0.
+
+We essentially want to write color 0 to all pixels, we do this by changing
+the pixels at each offset starting at `0xa0000`.
+```
+off = 0xa0000
+```
+
+We will update all bits at each offset at the same time, as well as all planes
+, for this, we set:
+```
+Bit Mask:         | 1 1 1 1 1 1 1 1 |
+Map Write Enable: | 0 0 0 0 1 1 1 1 |
+```
+
+To write color 0 to each pixel, we use the `Set/Reset` mechanism on all planes,
+that means:
+```
+Enable Set/Reset: | 0 0 0 0 1 1 1 1 |
+Set/Reset:        | 0 0 0 0 0 0 0 0 |
+```
+
+Combining all of these, no matter which byte we write, the bitplanes become:
+```
+  7 6 5 4 3 2 1 0
+| 0 0 0 0 0 0 0 0 | -> plane 00
+| 0 0 0 0 0 0 0 0 | -> plane 01
+| 0 0 0 0 0 0 0 0 | -> plane 10
+| 0 0 0 0 0 0 0 0 | -> plane 11
+```
+turning all pixels at these offset to color black.

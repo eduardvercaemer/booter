@@ -147,3 +147,37 @@ Combining all of these, no matter which byte we write, the bitplanes become:
 | 0 0 0 0 0 0 0 0 | -> plane 11
 ```
 turning all pixels at these offset to color black.
+
+## Drawing a single pixel
+
+Lets design a function that prints a single pixel at given coords.
+```
+pixel(u16 x, u16 y, u8 col)
+```
+We will be using write mode 0 for this.
+
+We can esaily get the offset for this pixel like
+```
+offset = 0xa0000 + (80 * y) + x/8
+bit    = 7 - x%8
+```
+
+Since we only want to update this pixel, we can use the `Bit Mask` for that.
+```
+BitMask: | 0 0 0 0 1 0 0 0 |
+```
+as an example for bit 3.
+
+Then we can set the color in the `Set/Reset` register, and use this to write
+to all planes in one go.
+```
+Enable Set/Reset: | 0 0 0 0 1  1  1  1   |
+Set/Reset:        | 0 0 0 0 c3 c2 c1 c01 |
+```
+this way, no matter what we write to the byte, we only modify the bit we want,
+and each plane gets the appropriate bit.
+
+Lets not forget to enable all bitplanes
+```
+Map Write Enable: | 0 0 0 0 1 1 1 1 |
+```

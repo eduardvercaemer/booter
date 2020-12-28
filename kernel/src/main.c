@@ -8,5 +8,7 @@ void kmain()
     
     init_graphics();
 
+    pixel(7, 0, 0x02);
+
     hang();
 }

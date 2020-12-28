@@ -45,7 +45,7 @@ build: \
 	$(BUILDDIR)/$(IMAGE).bin
 
 run: build
-	@$(QEMU) -drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw
+	@$(QEMU) -serial stdio -drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw
 
 debug: build
 	@$(QEMU) -s -S -drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw &

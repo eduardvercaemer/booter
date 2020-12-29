@@ -60,24 +60,31 @@ dirs:
 # --------------------------------------------------------------------------- #
 
 $(BUILDDIR)/$(IMAGE).bin: $(BUILDDIR)/$(BOOT).bin $(BUILDDIR)/$(KERNEL).bin
-	cat $^ > $@
+	@echo "   > generating final image"
+	@cat $^ > $@
 
 $(BUILDDIR)/$(KERNEL).bin: $(BUILDDIR)/$(KERNEL).elf
-	objcopy -O binary $< $@
+	@echo "   > extracting kernel binary"
+	@objcopy -O binary $< $@
 
 $(BUILDDIR)/$(KERNEL).sym: $(BUILDDIR)/$(KERNEL).elf
-	objcopy --only-keep-debug $< $@
+	@echo "   > extracting kernel symbols"
+	@objcopy --only-keep-debug $< $@
 
 $(BUILDDIR)/$(KERNEL).elf: $(KOBJS_)
-	$(LD) $(LFLAGS) -T $(KLINK) -o $@ $^
+	@echo "   > linking kernel"
+	@$(LD) $(LFLAGS) -T $(KLINK) -o $@ $^
 
 $(BUILDDIR)/$(BOOT).bin: $(SRCDIR)/boot.s
-	$(AS) -f bin -o $@ $^
+	@echo "   > assembling boot sector"
+	@$(AS) -f bin -o $@ $^
 
 # --------------------------------------------------------------------------- #
 
 $(BUILDDIR)/%.s.o: $(SRCDIR)/%.s
-	$(AS) $(SFLAGS) -o $@ $<
+	@echo -e " [$(AS)]\t$(notdir $@)"
+	@$(AS) $(SFLAGS) -o $@ $<
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	@echo -e " [$(CC)]\t$(notdir $@)"
+	@$(CC) $(CFLAGS) -o $@ -c $<

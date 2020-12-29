@@ -1,9 +1,20 @@
         [SECTION .text.start]
         [BITS 16]
         extern  kmain:function
+        extern  klowmem:object
         global  kentry:function
 
 kentry:
+
+get_lowmem:
+        clc
+        int     0x12
+        jc      .lowmem_error
+        mov     word [klowmem], ax
+        jmp     .lowmem_end
+.lowmem_error:
+        mov word [klowmem], 0
+.lowmem_end:
 
 enter_protected:
         ; load gdt descriptor from `ds`

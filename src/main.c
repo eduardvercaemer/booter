@@ -7,6 +7,7 @@ void kmain()
     // we want logging
     require_log();
 
-    log_info("hanging ...");
+    log("\n  ..:: b00ter - k:0.0.1 ::..\n\n");
+    log("hanging ...\n\n");
     hang();
 }

@@ -2,6 +2,6 @@
 #define KER_LOG_H
 
 /* log.c */
-extern void log_info(const char *msg);
+extern void log(const char *msg);
 
 #endif

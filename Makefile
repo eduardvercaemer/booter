@@ -23,6 +23,11 @@ KOBJS  = \
 KLINK   = $(SCRIPTS)/k32.ld
 QEMUDBG = $(SCRIPTS)/qemu.gdb
 
+QEMU_RUN = $(QEMU) \
+	-serial stdio \
+	-display none \
+	-drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw
+
 # --------------------------------------------------------------------------- #
 
 KOBJS_ = $(patsubst %.o,$(BUILDDIR)/%.o,$(KOBJS))
@@ -37,10 +42,10 @@ build: \
 	$(BUILDDIR)/$(IMAGE).bin
 
 run: build
-	@$(QEMU) -serial stdio -drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw
+	@$(QEMU_RUN)
 
 debug: build
-	@$(QEMU) -s -S -drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw &
+	@$(QEMU_RUN) -s -S &
 	@sleep 1
 	@gdb -x $(QEMUDBG)
 

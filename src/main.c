@@ -33,6 +33,6 @@ void kmain()
     }
     log("\n");
 
-    log("hanging ...\n\n");
+    log("\nhanging ...\n\n");
     hang();
 }

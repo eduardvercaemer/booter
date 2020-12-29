@@ -27,7 +27,18 @@ extern void log(const char *fmt, ...)
     for (; *fmt; ++fmt) {
         if (*fmt == '%') {  /* formating */
             switch (*(++fmt)) {
-            case 'x':
+            case '0':
+                switch (*(++fmt)) {
+                case 'x': /* %0x */
+                    serial_writeb('0');
+                    serial_writeb('x');
+                    log_x32(va_arg (ap, u32));
+                break;
+                default:
+                break;
+                }
+            break;
+            case 'x': /* %x */
                 log_x32(va_arg (ap, u32));
             break;
             default:
@@ -43,9 +54,6 @@ extern void log(const char *fmt, ...)
 
 extern void log_x32(u32 v)
 {
-    serial_writeb('0');
-    serial_writeb('x');
-
     for (u8 nib = 0; nib < 8; ++nib) {
         serial_writeb(repr_nibble((v >> (4*(7-nib)) & 0xf)));
     }

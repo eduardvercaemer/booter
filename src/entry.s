@@ -2,6 +2,7 @@
         [BITS 16]
         extern  kmain:function
         extern  klowmem:object
+        extern  uppmem:object
         global  kentry:function
 
 kentry:
@@ -15,6 +16,17 @@ get_lowmem:
 .lowmem_error:
         mov word [klowmem], 0
 .lowmem_end:
+
+get_uppmem:
+.do_e820:
+        lea     di, [uppmem]
+        xor     ebx, ebx
+        xor     bp, bp
+        mov     edx, 0x0534d4150
+        mov     eax, 0xe820
+        mov     [es:di + 20], dword 1
+        mov     ecx, 24
+        int     0x15
 
 enter_protected:
         ; load gdt descriptor from `ds`

@@ -17,6 +17,21 @@ void kmain()
     }
     log("kstart: %x\n", kstart);
     log("kend:   %x\n", kend);
+    log("uppmem:\n");
+    log("  ------ base ------ "
+        "----- length ----- "
+        "------ type ------\n");
+    log("  %0x%x %0x%x ",
+        uppmem[0].base_high,
+        uppmem[0].base_low,
+        uppmem[0].size_high,
+        uppmem[0].size_low);
+    switch (uppmem[0].type) {
+    case 1:
+        log("Free Memory (1)");
+    break;
+    }
+    log("\n");
 
     log("hanging ...\n\n");
     hang();

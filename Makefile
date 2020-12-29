@@ -25,6 +25,7 @@ KLINK   = $(SCRIPTS)/k32.ld
 QEMUDBG = $(SCRIPTS)/qemu.gdb
 
 QEMU_RUN = $(QEMU) \
+	-m 512M \
 	-serial stdio \
 	-display none \
 	-drive file=$(BUILDDIR)/$(IMAGE).bin,format=raw

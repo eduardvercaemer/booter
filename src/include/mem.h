@@ -12,6 +12,8 @@ struct __attribute__ ((packed)) SMAP_entry {
 };
 
 /* mem.c */
+#define SMAPS_MAX 64
+
 extern char  *mem_kstart;
 extern char  *mem_kend;
 extern u16    mem_lowmem;

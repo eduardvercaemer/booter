@@ -37,7 +37,7 @@ extern void k16_get_uppmem(void)
             ++buffer;
             ++entries;
         }
-    } while (contID != 0 && entries < 64);
+    } while (contID != 0 && entries < SMAPS_MAX);
 
     mem_SMAPc = entries;
 }

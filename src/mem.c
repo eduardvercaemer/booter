@@ -1,9 +1,6 @@
 #include <mem.h>
 #include <log.h>
 
-/* constants */
-#define SMAPS_MAX 64
-
 /* extracted from linking process */
 extern char _kstart;
 extern char _kend;
@@ -18,6 +15,8 @@ struct SMAP_entry mem_SMAPs[SMAPS_MAX]; /* uppmem entry table */
 /* get a memory dump to log */
 extern void mem_logdump(void)
 {
+    u64 upp_total = 0;
+
     log("["__FILE__"] :: Memory Dump\n");
 
     log(" kstart:\n");
@@ -43,6 +42,10 @@ extern void mem_logdump(void)
         switch (mem_SMAPs[i].type) {
         case 1:
             log(" (1) Free Memory");
+            u64 high = mem_SMAPs[i].size_high;
+            high <<= 32;
+            upp_total += high;
+            upp_total += mem_SMAPs[i].size_low;
         break;
         case 2:
             log(" (2) Reserved Memory");
@@ -53,4 +56,6 @@ extern void mem_logdump(void)
         }
         log("\n");
     }
+
+    log("\n <> total: %0x\n", upp_total);
 }

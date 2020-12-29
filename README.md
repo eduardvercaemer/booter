@@ -4,7 +4,7 @@ Here we start our little kernel. Now that we are
 finally able to load a program in protected mode
 we can start to write some code in C.
 
-# Layout
+# Source Code Layout
 
 The file `boot.s` is in charge of loading the rest
 of the image and passing control, that's it.
@@ -20,7 +20,7 @@ For now, the kernel is loaded at address `0x8000`,
 where the startup code is executed. The stacks is
 setup to begin at address `0x7FFFF`.
 
-# Files
+## Files
 
 Source code is stored in `./src`, any build files
 will be stored in `./build`, and misc scripts are
@@ -79,24 +79,3 @@ $ make clean
 
 to remove any build files.
 
-# Kernel Functionality
-
-Since once we are in protected we are unable to use
-any BIOS services, we are required to implement any
-functionality ourselves.
-
-## Console Output
-
-We can use a global `cursor` to represent our position
-in the screen, we can then use this information and
-the VGA memory area to draw any characters to the
-screen _(see function `putc`)_.
-
-## Input
-
-_TODO:_
-
-## System
-
-We have a simple function `hang` that simply loops
-the processor.

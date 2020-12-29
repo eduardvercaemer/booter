@@ -20,6 +20,7 @@
 <   ...  -> 0x7ffff > Top of Stack
 ```
 
+```
 boot.s    -> load kernel to 0x8000
 entry.s   -> init kernel real mode
 16(...).c -> real mode functionality
@@ -29,6 +30,7 @@ entry.s   -> call kmain
 main.c    -> kmain
 + log.c   -> kernel logging capabilities
 + ...     -> ...
+```
 
 ## Kernel Loading
 
@@ -37,7 +39,7 @@ after the boot sector area.
 
 After this, the startup code at `entry.s` initializes the environment
 for our kernel real mode phase, including setting up the stack.
-Once this is done, can work in real mode with our code from files
+Once this is done, we can work in real mode with our code from files
 `16*.c`.
 
 After all work is done, we enter protected mode and set the code and

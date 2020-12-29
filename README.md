@@ -4,6 +4,10 @@ Here we start our little kernel. Now that we are
 finally able to load a program in protected mode
 we can start to write some code in C.
 
+# Memory Layout
+
+[See here.](MEM.md)
+
 # Source Code Layout
 
 The file `boot.s` is in charge of loading the rest

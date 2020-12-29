@@ -13,7 +13,11 @@ void kmain()
     
     init_graphics();
     log_info("[GRAPHICS]: init");
-    pixel(7, 0, 0x02);
+
+    log_info("printing pixels ...");
+    for (int y = 20; y < 40; ++y)
+        for (int x = 20; x < 40; ++x)
+            pixel(x, y, 0x03);
 
     log_info("[KERN]: hanging");
     hang();

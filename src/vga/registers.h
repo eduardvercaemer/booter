@@ -1,39 +1,62 @@
 #ifndef VGA_REGISTERS_H
 #define VGA_REGISTERS_H
 
-/*
- *  Low Level VGA Register Access:
- *
- *  - For most VGA registers, we write an index to the port,
- *    and then the data to the next port.
- */
+/* registers.c */
+extern void out_idx(u16 port, u8 index, u8 v);
+extern void gcc_w(u8 index, u8 v);
+extern void seq_w(u8 index, u8 v);
+extern void crt_w(u8 index, u8 v);
+extern void atr_w(u8 index, u8 v);
 
-#define PORT_GC_IDX   0x03ce
-#define PORT_GC_DATA  0x03cf
-#define PORT_SEQ_IDX  0x03c4
-#define PORT_SEQ_DATA 0x03c5
+// Graphics Controller Registers
+// ------------------------------------
+//
+// Index 00h -- Set/Reset Register
+// Index 01h -- Enable Set/Reset Register
+// Index 02h -- Color Compare Register
+// Index 03h -- Data Rotate Register
+// Index 04h -- Read Map Select Register
+// Index 05h -- Graphics Mode Register
+// Index 06h -- Miscellaneous Graphics Register
+// Index 07h -- Color Don't Care Register
+// Index 08h -- Bit Mask Register
 
-/*
- *  VGA Graphics Controller
- */
+// Sequencer Registers
+// -------------------
+//
+// Index 00h -- Reset Register
+// Index 01h -- Clocking Mode Register
+// Index 02h -- Map Mask Register
+// Index 03h -- Character Map Select Register
+// Index 04h -- Sequencer Memory Mode Register
 
-extern void gcw_setreset(u8 planes);
-extern void gcw_enable_setreset(u8 planes);
-extern void gcw_color_compare(u8 planes);
-extern void gcw_data_rotate(u8 logical, u8 count);
-extern void gcw_read_map_select(u8 plane);
-extern void gcw_graphics_mode(u8 shift256, u8 shiftReg, u8 hostOE, u8 readMode, u8 writeMode);
-extern void gcw_misc(u8 mem_map, u8 chainOE, u8 alphaDis);
-extern void gcw_color_dontcare(u8 planes);
-extern void gcw_bitmask(u8 mask);
-// TODO: register read functions
-
-/*
- *  VGA Sequencer
- */
-
-// TODO: add other sequencer registers
-extern void seqw_map_mask(u8 planes);
-// TODO: register read functions
+// CRT Controller Registers
+// ------------------------
+// 
+// Index 00h -- Horizontal Total Register
+// Index 01h -- End Horizontal Display Register
+// Index 02h -- Start Horizontal Blanking Register
+// Index 03h -- End Horizontal Blanking Register
+// Index 04h -- Start Horizontal Retrace Register
+// Index 05h -- End Horizontal Retrace Register
+// Index 06h -- Vertical Total Register
+// Index 07h -- Overflow Register
+// Index 08h -- Preset Row Scan Register
+// Index 09h -- Maximum Scan Line Register
+// Index 0Ah -- Cursor Start Register
+// Index 0Bh -- Cursor End Register
+// Index 0Ch -- Start Address High Register
+// Index 0Dh -- Start Address Low Register
+// Index 0Eh -- Cursor Location High Register
+// Index 0Fh -- Cursor Location Low Register
+// Index 10h -- Vertical Retrace Start Register
+// Index 11h -- Vertical Retrace End Register
+// Index 12h -- Vertical Display End Register
+// Index 13h -- Offset Register
+// Index 14h -- Underline Location Register
+// Index 15h -- Start Vertical Blanking Register
+// Index 16h -- End Vertical Blanking
+// Index 17h -- CRTC Mode Control Register
+// Index 18h -- Line Compare Register
 
 #endif

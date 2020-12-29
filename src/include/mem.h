@@ -22,4 +22,7 @@ extern struct SMAP_entry mem_SMAPs[];
 
 extern void mem_logdump(void);
 
+extern void *mem_falloc();
+extern void  mem_ffree(void *ptr);
+
 #endif

@@ -17,7 +17,8 @@ struct SMAP_entry mem_SMAPs[SMAPS_MAX]; /* uppmem entry table */
 static u8 require_satisfied = 0;
 
 /* init physical memory bookkeeping */
-static void bookkeep_init(void) {
+static void bookkeep_init(void)
+{
     log_f("initializing bookkeeping\n");
 }
 
@@ -29,7 +30,10 @@ extern u8 require_mem(void)
     (void) require(log);
 
     bookkeep_init();
-    mem_logdump();
+
+    require_satisfied = 1;
+    log_f("require mem: SUCCESS\n");
+    return require_satisfied;
 }
 
 /* get a memory dump to log */

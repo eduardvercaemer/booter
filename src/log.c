@@ -13,7 +13,9 @@ extern u8 require_log(void)
     // we depend on serial
     if (!require(serial)) return 0;
 
-    return require_satisfied = 1;
+    require_satisfied = 1;
+    log_f("log requried: SUCCESS\n");
+    return require_satisfied;
 }
 
 extern void log(const char *fmt, ...)

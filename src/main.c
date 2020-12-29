@@ -6,8 +6,9 @@
 void kmain()
 {
     require(log); /* logging capabilities */
-    log("\n  ..:: b00ter - k:0.0.1 ::..\n\n");
     require(mem); /* memory management */
+
+    mem_logdump();
 
     log("\nhanging ...\n\n");
     hang();

@@ -19,15 +19,7 @@ BOOT   = boot
 KERNEL = kernel
 KOBJS  = \
 	entry.s.o \
-	main.o \
-	system.o \
-	ports.o \
-	mem.o \
-	log.o \
-	vga/vga.o \
-	vga/registers.o \
-	vga/text.o \
-	serial/serial.o
+	$(patsubst ./%.c,%.o,$(shell cd $(SRCDIR) && find -name "*.c"))
 KLINK   = $(SCRIPTS)/k32.ld
 QEMUDBG = $(SCRIPTS)/qemu.gdb
 

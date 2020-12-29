@@ -5,7 +5,7 @@
 
 static u8 require_satisfied = 0;
 
-extern int require_log(void)
+extern u8 require_log(void)
 {
     if (require_satisfied) return 1;
     

@@ -11,7 +11,7 @@ extern u8 require_log(void)
     if (require_satisfied) return 1;
     
     // we depend on serial
-    if (!require_serial()) return 0;
+    if (!require(serial)) return 0;
 
     return require_satisfied = 1;
 }
@@ -54,6 +54,8 @@ extern void log(const char *fmt, ...)
 
 extern void log_x32(u32 v)
 {
+    if (!require_satisfied) return;
+
     for (u8 nib = 0; nib < 8; ++nib) {
         serial_writeb(repr_nibble((v >> (4*(7-nib)) & 0xf)));
     }

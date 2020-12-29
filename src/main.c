@@ -5,12 +5,9 @@
 
 void kmain()
 {
-    // we want logging
-    require_log();
-
+    require(log); /* logging capabilities */
     log("\n  ..:: b00ter - k:0.0.1 ::..\n\n");
-    
-    mem_logdump();
+    require(mem); /* memory management */
 
     log("\nhanging ...\n\n");
     hang();

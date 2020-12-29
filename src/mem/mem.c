@@ -1,5 +1,6 @@
 #include <mem.h>
 #include <log.h>
+#include <require.h>
 
 /* extracted from linking process */
 extern char _kstart;
@@ -12,12 +13,31 @@ u16    mem_lowmem = 0;                  /* amount of KiB of lowmem */
 u16    mem_SMAPc = 0;                   /* amount of SMAP entries */
 struct SMAP_entry mem_SMAPs[SMAPS_MAX]; /* uppmem entry table */
 
+/* require */
+static u8 require_satisfied = 0;
+
+/* init physical memory bookkeeping */
+static void bookkeep_init(void) {
+    log_f("initializing bookkeeping\n");
+}
+
+extern u8 require_mem(void)
+{
+    if (require_satisfied) return 1;
+
+    /* we want to log */
+    (void) require(log);
+
+    bookkeep_init();
+    mem_logdump();
+}
+
 /* get a memory dump to log */
 extern void mem_logdump(void)
 {
     u64 upp_total = 0;
 
-    log("["__FILE__"] :: Memory Dump\n");
+    log_f("memory setup dump\n");
 
     log(" kstart:\n");
     log(" <> %0x\n", mem_kstart);

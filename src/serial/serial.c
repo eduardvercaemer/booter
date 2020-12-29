@@ -3,20 +3,23 @@
 
 #define PORT_COM1 0x03f8
 
-static int serial_received();
-static int is_transmit_empty();
+static u8 require_satisfied;
 
-static int serial_received()
+static int serial_received(void);
+static int is_transmit_empty(void);
+static int serial_init(void);
+
+static int serial_received(void)
 {
     return inb(PORT_COM1 + 5) & 1;
 }
 
-static int is_transmit_empty()
+static int is_transmit_empty(void)
 {
     return inb(PORT_COM1 + 5) & 0x20;
 }
 
-extern int init_serial()
+static int serial_init(void)
 {
     outb(PORT_COM1 + 1, 0x00);    // Disable all interrupts
     outb(PORT_COM1 + 3, 0x80);    // Enable DLAB (set baud rate divisor)
@@ -39,13 +42,22 @@ extern int init_serial()
     return 0;
 }
 
-extern char read_serial()
+extern int require_serial(void)
+{
+    if (require_satisfied) return 1;
+
+    serial_init();
+    return require_satisfied = 1;
+}
+
+
+extern char serial_readb(void)
 {
     while (serial_received() == 0) ;
     return inb(PORT_COM1);
 }
 
-extern void write_serial(char val)
+extern void serial_writeb(char val)
 {
     while (is_transmit_empty() == 0) ;
     outb(PORT_COM1, val);

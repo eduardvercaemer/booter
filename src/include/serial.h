@@ -2,8 +2,7 @@
 #define KER_SERIAL_H
 
 /* serial/serial.c */
-extern int init_serial();
-extern char read_serial();
-extern void write_serial(char val);
+extern char serial_readb(void);
+extern void serial_writeb(char val);
 
 #endif

@@ -61,6 +61,7 @@ dirs:
 	@[[ -d $(BUILDDIR) ]] || mkdir $(BUILDDIR)
 	@[[ -d $(BUILDDIR)/vga ]] || mkdir $(BUILDDIR)/vga
 	@[[ -d $(BUILDDIR)/serial ]] || mkdir $(BUILDDIR)/serial
+	@[[ -d $(BUILDDIR)/mem ]] || mkdir $(BUILDDIR)/mem
 
 .PHONY: build run debug clean dirs
 

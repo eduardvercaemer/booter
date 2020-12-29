@@ -11,7 +11,7 @@ struct __attribute__ ((packed)) SMAP_entry {
     u32 acpi;
 };
 
-/* mem.c */
+/* mem/mem.c */
 #define SMAPS_MAX 64
 
 extern char  *mem_kstart;

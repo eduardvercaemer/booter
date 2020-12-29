@@ -1,6 +1,5 @@
 ;======================================================================
-;  Load payload program, switch to protected mode and 
-;  pass control.
+;  Load payload program to specified address and pass control.
 ;======================================================================
 
 ;======================================================================

@@ -1,34 +1,41 @@
-        [SECTION .text.start]
         [BITS 16]
+        [SECTION .text.start]
         extern  kmain:function
-        extern  klowmem:object
-        extern  uppmem:object
+        extern  k16_get_lowmem:function
+        extern  k16_get_uppmem:function
         global  kentry:function
 
 kentry:
 
-get_lowmem:
-        clc
-        int     0x12
-        jc      .lowmem_error
-        mov     word [klowmem], ax
-        jmp     .lowmem_end
-.lowmem_error:
-        mov word [klowmem], 0
-.lowmem_end:
+;-----------------------------------------------------
+;
+; Kernel Real Mode Operation
+;
+;-----------------------------------------------------
 
-get_uppmem:
-.do_e820:
-        lea     di, [uppmem]
-        xor     ebx, ebx
-        xor     bp, bp
-        mov     edx, 0x0534d4150
-        mov     eax, 0xe820
-        mov     [es:di + 20], dword 1
-        mov     ecx, 24
-        int     0x15
+k16init:
+        ; initialize environment for kernel real mode
+        ; (assume segments set to 0)
+.set_stack:
+        ; stack top @ 0x7000:0xffff
+        mov     ax, 0x7000
+        mov     ss, ax
+        mov     bp, 0xffff
+        mov     sp, bp
 
-enter_protected:
+.get_mem:
+        call    k16_get_lowmem
+        call    k16_get_uppmem
+
+;-----------------------------------------------------
+;
+; Exit Real Mode
+;
+;-----------------------------------------------------
+
+
+kinit:
+.enter_protected:
         ; load gdt descriptor from `ds`
         cli                             ; disable interrupts
         lgdt    [gdt_desc]              ; load gdt
@@ -39,15 +46,11 @@ enter_protected:
         mov     cr0, eax
 
         ; clear pipeline and far-jump to code segment
-        jmp     0x08:clear_pipe
+        jmp     0x08:.clear_pipe
 
-;----------------------------------------------------------------------
-;  Protected Code Begins Here
-;----------------------------------------------------------------------
         [BITS 32]
-
-clear_pipe:
-setup_registers:
+.clear_pipe:
+.setup_registers:
         ; set data segments from descriptor 0x10
         mov     ax, 0x10
         mov     ds, ax

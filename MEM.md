@@ -13,3 +13,32 @@
 < 0x000c8000 - 0x000effff > (160 KiB)   | BIOS Expansions     |
 < 0x000f0000 - 0x000fffff > (64 KiB)    | Motherboard BIOS    |
 ```
+
+## Kernel Layout
+```
+< 0x8000 ->   ...   > Kernel Binary
+<   ...  -> 0x7ffff > Top of Stack
+```
+
+boot.s    -> load kernel to 0x8000
+entry.s   -> init kernel real mode
+16(...).c -> real mode functionality
++ 16mem.c -> use bios to get memory info
+entry.s   -> enter protected mode
+entry.s   -> call kmain
+main.c    -> kmain
++ log.c   -> kernel logging capabilities
++ ...     -> ...
+
+## Kernel Loading
+
+The kernel gets loaded by `boot.s` at address `0x8000`, some space
+after the boot sector area.
+
+After this, the startup code at `entry.s` initializes the environment
+for our kernel real mode phase, including setting up the stack.
+Once this is done, can work in real mode with our code from files
+`16*.c`.
+
+After all work is done, we enter protected mode and set the code and
+data segments for the same memory layout. Then we call `kmain`.

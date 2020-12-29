@@ -2,15 +2,6 @@
 #define KER_MEM_H
 #include <types.h>
 
-/* mem.c */
-extern char *kstart;
-extern char *kend;
-extern u16 klowmem;
-
-/*
- *  Used for bios memmap entries
- */
-
 struct __attribute__ ((packed)) SMAP_entry {
     u32 base_low;
     u32 base_high;
@@ -19,6 +10,14 @@ struct __attribute__ ((packed)) SMAP_entry {
     u32 type;
     u32 acpi;
 };
-extern struct SMAP_entry uppmem[64];
+
+/* mem.c */
+extern char  *mem_kstart;
+extern char  *mem_kend;
+extern u16    mem_lowmem;
+extern u16    mem_SMAPc;
+extern struct SMAP_entry mem_SMAPs[];
+
+extern void mem_logdump(void);
 
 #endif

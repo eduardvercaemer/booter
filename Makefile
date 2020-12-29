@@ -8,6 +8,7 @@ AS     = nasm
 SFLAGS = -O0 -g -f elf32
 CC     = cc
 CFLAGS = -O0 -g -nostdlib -m32 -ffreestanding -fno-pie -I$(SRCDIR)/include
+CFLAGS += -Werror -Wfatal-errors
 LD     = ld
 LFLAGS = -m elf_i386
 QEMU   = qemu-system-x86_64

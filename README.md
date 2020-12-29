@@ -18,7 +18,7 @@ our kernel.
 
 For now, the kernel is loaded at address `0x8000`,
 where the startup code is executed. The stacks is
-setup to begin at address `0x9FFFF`.
+setup to begin at address `0x7FFFF`.
 
 # Files
 

@@ -33,7 +33,7 @@ setup_registers:
         mov     gs, ax
         ; set stack
         mov     ss, ax
-        mov     ebp, 0x0009FFFF
+        mov     ebp, 0x0007FFFF
         mov     esp, ebp
 
 kstart:
@@ -43,7 +43,7 @@ kstart:
 ; -- Memory Layout
 ;
 ;  0000 8000 -> kernel code (lodad from drive)
-;  0009 FFFF -> beginning of stack
+;  0007 FFFF -> beginning of stack
 ;
 ; -- Segments Layout (GDT)
 ;

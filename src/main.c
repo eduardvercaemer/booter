@@ -15,6 +15,11 @@ void kmain()
     void *page2 = mem_palloc();
     void *page3 = mem_palloc();
 
+    mem_pfree(page2);
+    mem_pfree(page0);
+    mem_pfree(page3);
+    mem_pfree(page1);
+
     log("\nhanging ...\n\n");
     hang();
 }

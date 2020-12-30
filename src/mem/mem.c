@@ -170,16 +170,80 @@ extern void mem_logdump(void)
 /* request a page from the keeper */
 extern void* mem_palloc(void)
 {
+    void* ptr;
+    u16 i;
+    u8 pages, bit;
+
+    log_f("page request\n");
+
     /* we need a valid keeper */
     if (!mem_keeper.chunk_size) {
+        log("<> err: no valid chunk\n");
         return 0;
     }
 
+    for (i = 0; i < mem_keeper.page_cap / 8; ++i) {
+        if (pages = mem_keeper.page_table[i]) {
+            for (bit = 7; bit >= 0; --bit) {
+                if (pages & (1 << bit)) {
+                    break;
+                }
+            }
+            mem_keeper.page_table[i] ^= (1 << bit);
+
+            ptr = (void*)mem_keeper.chunk_base;
+            ptr += 0x1000 * 8 * i;
+            ptr += 0x1000 * (7 - bit);
+
+            log("<> page found: %0x\n", ptr);
+            return ptr;
+        }
+    }
+
+    log("<> no page found\n");
     return 0;
 }
 
 /* return a page to the keeper */
 extern void mem_pfree(void *ptr)
 {
-    if (!ptr) return;
+    u32 chunk_base = mem_keeper.chunk_base;
+    u32 addr = (u32)ptr;
+
+    log_f("page return\n");
+
+    if (!addr) {
+        log("<> err: null pointer\n");
+        return;
+    }
+
+    if (addr < chunk_base) {
+        log("<> err: pointer before chunk\n");
+        return;
+    }
+
+    addr -= chunk_base;
+
+    if (addr % 0x1000 != 0) {
+        log("<> err: pointer unaligned\n");
+        return;
+    }
+
+    u32 page = addr / 0x1000;
+
+    if (page >= mem_keeper.page_cap) {
+        log("<> err: page out of bounds\n");
+        return;
+    }
+
+    u16 byte = page / 8;
+    u8 bit = 7 - (page % 8);
+
+    if (mem_keeper.page_table[byte] & (1 << bit)) {
+        log("<> err: page not taken\n");
+        return;
+    }
+
+    mem_keeper.page_table[byte] ^= (1 << bit);
+    log("<> page returned\n");
 }

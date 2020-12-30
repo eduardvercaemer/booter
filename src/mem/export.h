@@ -20,4 +20,7 @@ extern SMAP_entry_t mem_SMAPs[SMAPS_MAX];
 extern u8           require_mem(void);
 extern void         mem_logdump(void);
 
+extern void*        mem_palloc(void);
+extern void         mem_pfree(void *ptr);
+
 #endif

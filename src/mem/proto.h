@@ -5,12 +5,12 @@
 #include "export.h"
 
 /* structure definitions */
-typedef struct booker {
+typedef struct keeper {
     u32             chunk_base;
     u32             chunk_size;
     u32             page_cap;
     char*           page_table;
-} booker_t;
+} keeper_t;
 
 /* require */
 static u8           require_satisfied = 0;
@@ -27,7 +27,7 @@ u16                 mem_SMAPc = 0;
 SMAP_entry_t        mem_SMAPs[SMAPS_MAX];
 
 /* bookkeeping context */
-static booker_t     mem_books;
+static keeper_t     mem_keeper;
 
 /* private mem api */
-static void         bookkeep_init(void);
+static void         keeper_init(void);

@@ -1,10 +1,10 @@
 #include <log.h>
 #include "proto.h"
 
-/* init the bookkeeper from system mem context */
-static void bookkeep_init(void)
+/* init the keeper from system mem context */
+static void keeper_init(void)
 {
-    log_f("initializing bookkeeper\n");
+    log_f("initializing keeper\n");
 
     u32 base, size;
 
@@ -43,7 +43,7 @@ static void bookkeep_init(void)
         log("<> allocating page table at beginning of chunk\n");
         if (size < 0x1000)
             goto failed;
-        mem_books.page_table  = (char*)0x100000;
+        mem_keeper.page_table  = (char*)0x100000;
         size -= 0x1000;
         base  = 0x101000;
 
@@ -58,12 +58,12 @@ static void bookkeep_init(void)
 
         /* each page is 4k in size */
         log("<> allocating pages\n");
-        mem_books.page_cap = size / 0x1000;
+        mem_keeper.page_cap = size / 0x1000;
         /* for now, we have a max of 0x8000 pages */
-        if (mem_books.page_cap > 0x8000) {
+        if (mem_keeper.page_cap > 0x8000) {
             log("<> hit max page count of 0x8000\n");
-            mem_books.page_cap = 0x8000;
-            size = mem_books.page_cap * 0x1000;
+            mem_keeper.page_cap = 0x8000;
+            size = mem_keeper.page_cap * 0x1000;
         }
 
         // each bit in the page table, keeps track of a single
@@ -71,36 +71,36 @@ static void bookkeep_init(void)
         // 1 = available
         // 0 = unavailable
         for (u32 i = 0; i < 0x1000; ++i) /* clear all page table */
-            mem_books.page_table[i] = 0;
-        for (u32 i = 0; i < mem_books.page_cap/8; ++i)
-            mem_books.page_table[i] = 0xff;
+            mem_keeper.page_table[i] = 0;
+        for (u32 i = 0; i < mem_keeper.page_cap/8; ++i)
+            mem_keeper.page_table[i] = 0xff;
         // handle pages out of complete byte
-        if (mem_books.page_cap % 8 != 0) {
+        if (mem_keeper.page_cap % 8 != 0) {
             log("<> trimming uneven pages\n");
-            mem_books.page_cap -= mem_books.page_cap % 8;
-            size = mem_books.page_cap * 0x1000;
+            mem_keeper.page_cap -= mem_keeper.page_cap % 8;
+            size = mem_keeper.page_cap * 0x1000;
         }
 
         /* set remaing values */
-        mem_books.chunk_base = base;
-        mem_books.chunk_size = size;
+        mem_keeper.chunk_base = base;
+        mem_keeper.chunk_size = size;
 
-        log("<> final bookkeeper\n");
-        log("   <> page table:   %0x\n", mem_books.page_table);
-        log("   <> page count:   %0x\n", mem_books.page_cap);
-        log("   <> chunk base:   %0x\n", mem_books.chunk_base);
-        log("   <> chunk length: %0x\n", mem_books.chunk_size);
+        log("<> final keeper\n");
+        log("   <> page table:   %0x\n", mem_keeper.page_table);
+        log("   <> page count:   %0x\n", mem_keeper.page_cap);
+        log("   <> chunk base:   %0x\n", mem_keeper.chunk_base);
+        log("   <> chunk length: %0x\n", mem_keeper.chunk_size);
 
         goto success;
     }
 
     success:
-        log("<> bookkeeper setup succeeded !!!\n");
+        log("<> keeper setup succeeded !!!\n");
         return;
 
     failed:
-        log("<> bookkeeper setup failed !!!\n");
-        mem_books.chunk_size = 0;
+        log("<> keeper setup failed !!!\n");
+        mem_keeper.chunk_size = 0;
         return;
 }
 
@@ -112,7 +112,7 @@ extern u8 require_mem(void)
     /* we want to log */
     (void) require_log();
 
-    bookkeep_init();
+    keeper_init();
 
     require_satisfied = 1;
     return require_satisfied;
@@ -121,7 +121,7 @@ extern u8 require_mem(void)
 /* get a memory dump to log */
 extern void mem_logdump(void)
 {
-    log_f("memory manager dump\n");
+    log_f("memory module dump\n");
 
     log("<> kstart:   %0x\n", mem_kstart);
     log("<> kend:     %0x\n", mem_kend);
@@ -154,16 +154,32 @@ extern void mem_logdump(void)
         }
         log("\n");
     }
-    log("<> bookkeeper:\n");
+    log("<> keeper:\n");
     log("   <> valid chunk ? ");
-    if (mem_books.chunk_size != 0) {
+    if (mem_keeper.chunk_size != 0) {
         log("Y\n");
-        log("   <> page table:   %0x\n", mem_books.page_table);
-        log("   <> page count:   %0x\n", mem_books.page_cap);
-        log("   <> chunk base:   %0x\n", mem_books.chunk_base);
-        log("   <> chunk length: %0x\n", mem_books.chunk_size);
+        log("   <> page table:   %0x\n", mem_keeper.page_table);
+        log("   <> page count:   %0x\n", mem_keeper.page_cap);
+        log("   <> chunk base:   %0x\n", mem_keeper.chunk_base);
+        log("   <> chunk length: %0x\n", mem_keeper.chunk_size);
     } else {
         log("N\n");
     }
 }
 
+/* request a page from the keeper */
+extern void* mem_palloc(void)
+{
+    /* we need a valid keeper */
+    if (!mem_keeper.chunk_size) {
+        return 0;
+    }
+
+    return 0;
+}
+
+/* return a page to the keeper */
+extern void mem_pfree(void *ptr)
+{
+    if (!ptr) return;
+}

@@ -35,9 +35,17 @@ Inner workings of the module.
 When we `require` the memory module, the `bookkeep` init is run,
 this inits the bookeeping state.
 
-For now, we simply look for an SMAP entry containing `0x100000`,
-after that, we simply bookkeep the memory in this chunk, starting
-at `0x100000`.
+- We look for a usable memory chunk containing address `0x100000`.
+- We allocate a page table at this address of size one page (`0x1000`).
+- The remaining free memory in the chunk is divided into chunks, beginning
+  at the end of the page table.
+- Each bit of the page table represents the availability of each page
+  (1 = available, = = unavailable)
+
+*TODO:*
+- Currently, we have a limit of 0x8000 managed pages because of the 4KiB
+  page table.
+- We are only using memory from one contiguos memory chunk.
 
 ## Notes
 

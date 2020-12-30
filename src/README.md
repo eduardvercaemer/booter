@@ -32,7 +32,7 @@ A module looks like this in the file tree:
 +-- export.h
 +-- proto.h
 +-- <module name>.c
-+-- <module name>.md
++-- README.md
 ```
 
 To make the module accessible within the rest of the kernel, we

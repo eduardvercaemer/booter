@@ -1,38 +1,53 @@
-#include <mem.h>
 #include <log.h>
-#include <require.h>
+#include "proto.h"
 
-/* extracted from linking process */
-extern char _kstart;
-extern char _kend;
-
-/* exported values */
-char  *mem_kstart = &_kstart;           /* address were kernel starts */
-char  *mem_kend = &_kend;               /* address were kernel ends */
-u16    mem_lowmem = 0;                  /* amount of KiB of lowmem */
-u16    mem_SMAPc = 0;                   /* amount of SMAP entries */
-struct SMAP_entry mem_SMAPs[SMAPS_MAX]; /* uppmem entry table */
-
-/* require */
-static u8 require_satisfied = 0;
-
-/* init physical memory bookkeeping */
+/* init the bookkeeper from system mem context */
 static void bookkeep_init(void)
 {
     log_f("initializing bookkeeping\n");
+
+    /* we want memory at 0x100000 */
+    u32 base, size = 0;
+    for (int i = 0; i < mem_SMAPc; ++i) {
+        /* ignore entries beyond 0xffffffff */
+        if (mem_SMAPs[i].base_high) continue;
+            base = mem_SMAPs[i].base_low;
+        if (mem_SMAPs[i].size_high) {
+            size = 0xffffffff;
+        } else {
+            size = mem_SMAPs[i].size_low;
+        }
+
+        if (base <= 0x100000 && base + size > 0x100000) {
+            /* usable memory chunk */
+            if (mem_SMAPs[i].type == 1) break;
+        }
+    }
+
+    if (size == 0) {
+        log("<> no valid chunk found !\n");
+        mem_books.valid_chunk = 0;
+        return;
+    } else {
+        log("<> found valid chunk !\n");
+        log("<> base:   %0x\n", base);
+        log("<> length: %0x\n", size);
+        mem_books.valid_chunk = 1;
+        return;
+    }
 }
 
+/* ask for the mem module */
 extern u8 require_mem(void)
 {
     if (require_satisfied) return 1;
 
     /* we want to log */
-    (void) require(log);
+    (void) require_log();
 
     bookkeep_init();
 
     require_satisfied = 1;
-    log_f("require mem: SUCCESS\n");
     return require_satisfied;
 }
 
@@ -83,3 +98,4 @@ extern void mem_logdump(void)
 
     log("\n <> total: %0x\n", upp_total);
 }
+

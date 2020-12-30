@@ -1,12 +1,11 @@
 #include <system.h>
-#include <require.h>
 #include <log.h>
 #include <mem.h>
 
 void kmain()
 {
-    require(log); /* logging capabilities */
-    require(mem); /* memory management */
+    require_log(); /* logging capabilities */
+    require_mem(); /* memory management */
 
     mem_logdump();
 

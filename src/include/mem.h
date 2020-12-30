@@ -1,28 +1,4 @@
 #ifndef KER_MEM_H
 #define KER_MEM_H
-#include <types.h>
-
-struct __attribute__ ((packed)) SMAP_entry {
-    u32 base_low;
-    u32 base_high;
-    u32 size_low;
-    u32 size_high;
-    u32 type;
-    u32 acpi;
-};
-
-/* mem/mem.c */
-#define SMAPS_MAX 64
-
-extern char  *mem_kstart;
-extern char  *mem_kend;
-extern u16    mem_lowmem;
-extern u16    mem_SMAPc;
-extern struct SMAP_entry mem_SMAPs[];
-
-extern void mem_logdump(void);
-
-extern void *mem_falloc();
-extern void  mem_ffree(void *ptr);
-
+#include "../mem/export.h"
 #endif

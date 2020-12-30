@@ -1,20 +1,25 @@
-#include <log.h>
 #include <serial.h>
-#include <require.h>
 #include <repr.h>
 #include <stdarg.h>
+#include "proto.h"
 
-static u8 require_satisfied = 0;
+static void log_x32(u32 v)
+{
+    if (!require_satisfied) return;
+
+    for (u8 nib = 0; nib < 8; ++nib) {
+        serial_writeb(repr_nibble((v >> (4*(7-nib)) & 0xf)));
+    }
+}
 
 extern u8 require_log(void)
 {
     if (require_satisfied) return 1;
     
     // we depend on serial
-    if (!require(serial)) return 0;
+    if (!require_serial()) return 0;
 
     require_satisfied = 1;
-    log_f("log requried: SUCCESS\n");
     return require_satisfied;
 }
 
@@ -54,11 +59,3 @@ extern void log(const char *fmt, ...)
     va_end (ap);
 }
 
-extern void log_x32(u32 v)
-{
-    if (!require_satisfied) return;
-
-    for (u8 nib = 0; nib < 8; ++nib) {
-        serial_writeb(repr_nibble((v >> (4*(7-nib)) & 0xf)));
-    }
-}

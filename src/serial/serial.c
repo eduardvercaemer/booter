@@ -1,13 +1,7 @@
 #include <ports.h>
-#include <serial.h>
+#include "proto.h"
 
 #define PORT_COM1 0x03f8
-
-static u8 require_satisfied;
-
-static int serial_received(void);
-static int is_transmit_empty(void);
-static int serial_init(void);
 
 static int serial_received(void)
 {
@@ -42,7 +36,7 @@ static int serial_init(void)
     return 0;
 }
 
-extern int require_serial(void)
+extern u8 require_serial(void)
 {
     if (require_satisfied) return 1;
 

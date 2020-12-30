@@ -1,7 +1,9 @@
+__asm__(".code16gcc\n\t");
 #include <types.h>
 #include <mem.h>
-__asm__(".code16gcc\n\t");
 
+// uses BIOS int 12h to get info about
+// the available lower memory
 extern void k16_get_lowmem(void)
 {
     __asm__ __volatile__ (
@@ -12,6 +14,8 @@ extern void k16_get_lowmem(void)
     );
 }
 
+// uses BIOS int 15h to get the SMAP entries
+// that describe the upper memory regions
 extern void k16_get_uppmem(void)
 {
     u32 contID = 0;

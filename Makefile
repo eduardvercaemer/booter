@@ -44,6 +44,7 @@ build: \
 	$(BUILDDIR)/$(IMAGE).bin
 
 run: build
+	@echo -e "   > running kernel\n"
 	@$(QEMU_RUN)
 
 debug: build
@@ -59,9 +60,10 @@ clean:
 
 dirs:
 	@[[ -d $(BUILDDIR) ]] || mkdir $(BUILDDIR)
-	@[[ -d $(BUILDDIR)/vga ]] || mkdir $(BUILDDIR)/vga
 	@[[ -d $(BUILDDIR)/serial ]] || mkdir $(BUILDDIR)/serial
 	@[[ -d $(BUILDDIR)/mem ]] || mkdir $(BUILDDIR)/mem
+	@[[ -d $(BUILDDIR)/log ]] || mkdir $(BUILDDIR)/log
+	@[[ -d $(BUILDDIR)/realmode ]] || mkdir $(BUILDDIR)/realmode
 
 .PHONY: build run debug clean dirs
 

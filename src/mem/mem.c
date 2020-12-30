@@ -4,14 +4,19 @@
 /* init the bookkeeper from system mem context */
 static void bookkeep_init(void)
 {
-    log_f("initializing bookkeeping\n");
+    log_f("initializing bookkeeper\n");
 
-    /* we want memory at 0x100000 */
-    u32 base, size = 0;
+    u32 base, size;
+
+    /* we want a memory chunk at 0x100000 */
     for (int i = 0; i < mem_SMAPc; ++i) {
+        base = 0;
+        size = 0;
+
         /* ignore entries beyond 0xffffffff */
         if (mem_SMAPs[i].base_high) continue;
-            base = mem_SMAPs[i].base_low;
+        
+        base = mem_SMAPs[i].base_low;
         if (mem_SMAPs[i].size_high) {
             size = 0xffffffff;
         } else {
@@ -25,16 +30,78 @@ static void bookkeep_init(void)
     }
 
     if (size == 0) {
-        log("<> no valid chunk found !\n");
-        mem_books.valid_chunk = 0;
-        return;
+        goto failed;
     } else {
-        log("<> found valid chunk !\n");
-        log("<> base:   %0x\n", base);
-        log("<> length: %0x\n", size);
-        mem_books.valid_chunk = 1;
-        return;
+        log("<> found raw memory chunk\n");
+
+        /* real chunk size starting at 0x100000*/
+        log("<> moving chunk to 0x100000\n");
+        size -= 0x100000 - base;
+        base  = 0x100000;
+
+        /* we need at least 4k for the page table */
+        log("<> allocating page table at beginning of chunk\n");
+        if (size < 0x1000)
+            goto failed;
+        mem_books.page_table  = (char*)0x100000;
+        size -= 0x1000;
+        base  = 0x101000;
+
+        /* align chunk size to 4k */
+        log("<> enforcing chunk align\n");
+        size -= size % 0x1000;
+
+        /*
+         * a page table of 4k gives us 0x1000 btyes or 0x8000 bits
+         * a.k.a. we can keep track of 0x8000 pages max.
+         */
+
+        /* each page is 4k in size */
+        log("<> allocating pages\n");
+        mem_books.page_cap = size / 0x1000;
+        /* for now, we have a max of 0x8000 pages */
+        if (mem_books.page_cap > 0x8000) {
+            log("<> hit max page count of 0x8000\n");
+            mem_books.page_cap = 0x8000;
+            size = mem_books.page_cap * 0x1000;
+        }
+
+        // each bit in the page table, keeps track of a single
+        // page in the chunk
+        // 1 = available
+        // 0 = unavailable
+        for (u32 i = 0; i < 0x1000; ++i) /* clear all page table */
+            mem_books.page_table[i] = 0;
+        for (u32 i = 0; i < mem_books.page_cap/8; ++i)
+            mem_books.page_table[i] = 0xff;
+        // handle pages out of complete byte
+        if (mem_books.page_cap % 8 != 0) {
+            log("<> trimming uneven pages\n");
+            mem_books.page_cap -= mem_books.page_cap % 8;
+            size = mem_books.page_cap * 0x1000;
+        }
+
+        /* set remaing values */
+        mem_books.chunk_base = base;
+        mem_books.chunk_size = size;
+
+        log("<> final bookkeeper\n");
+        log("   <> page table:   %0x\n", mem_books.page_table);
+        log("   <> page count:   %0x\n", mem_books.page_cap);
+        log("   <> chunk base:   %0x\n", mem_books.chunk_base);
+        log("   <> chunk length: %0x\n", mem_books.chunk_size);
+
+        goto success;
     }
+
+    success:
+        log("<> bookkeeper setup succeeded !!!\n");
+        return;
+
+    failed:
+        log("<> bookkeeper setup failed !!!\n");
+        mem_books.chunk_size = 0;
+        return;
 }
 
 /* ask for the mem module */
@@ -54,25 +121,19 @@ extern u8 require_mem(void)
 /* get a memory dump to log */
 extern void mem_logdump(void)
 {
-    u64 upp_total = 0;
+    log_f("memory manager dump\n");
 
-    log_f("memory setup dump\n");
+    log("<> kstart:   %0x\n", mem_kstart);
+    log("<> kend:     %0x\n", mem_kend);
+    log("<> lowmem:   %0x KiB\n", mem_lowmem);
+    log("<> SMAP entries: %0x\n", mem_SMAPc);
 
-    log(" kstart:\n");
-    log(" <> %0x\n", mem_kstart);
-    log(" kend:\n");
-    log(" <> %0x\n", mem_kend);
-    log(" lowmem:\n");   
-    log(" <> %0x KiB\n", mem_lowmem);
-    log(" uppmem:\n");
-    log(" <> SMAP entries: %0x\n", mem_SMAPc);
-
-    log("    ------ base ------"
-           " ----- length -----"
-           " ------ type ------\n");
+    log("   ------ base ------"
+          " ----- length -----"
+          " ------ type ------\n");
 
     for (int i = 0; i < mem_SMAPc; ++i) {
-        log("    %0x%x %0x%x",
+        log("   %0x%x %0x%x",
             mem_SMAPs[i].base_high,
             mem_SMAPs[i].base_low,
             mem_SMAPs[i].size_high,
@@ -83,8 +144,6 @@ extern void mem_logdump(void)
             log(" (1) Free Memory");
             u64 high = mem_SMAPs[i].size_high;
             high <<= 32;
-            upp_total += high;
-            upp_total += mem_SMAPs[i].size_low;
         break;
         case 2:
             log(" (2) Reserved Memory");
@@ -95,7 +154,16 @@ extern void mem_logdump(void)
         }
         log("\n");
     }
-
-    log("\n <> total: %0x\n", upp_total);
+    log("<> bookkeeper:\n");
+    log("   <> valid chunk ? ");
+    if (mem_books.chunk_size != 0) {
+        log("Y\n");
+        log("   <> page table:   %0x\n", mem_books.page_table);
+        log("   <> page count:   %0x\n", mem_books.page_cap);
+        log("   <> chunk base:   %0x\n", mem_books.chunk_base);
+        log("   <> chunk length: %0x\n", mem_books.chunk_size);
+    } else {
+        log("N\n");
+    }
 }
 
